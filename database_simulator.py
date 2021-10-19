@@ -1,7 +1,12 @@
 import numpy as np
 
+from typing import Final
+
 
 class DatabaseSimulator():
+
+    PRIORITIES: Final = ('H', 'M', 'L')
+
     def __init__(self, n) -> None:
         """Constructor to initialise the database sim
         Parameters: 
@@ -10,7 +15,7 @@ class DatabaseSimulator():
             None"""
 
         self.n = n
-        self.priorities = ('H', 'M', 'L')
+        # self.priorities = ('H', 'M', 'L')
         self.dates = ('2021-10-19', '2021-10-20', '2021-10-21', '2021-10-22')
 
     def generate_orders(self) -> list:
@@ -23,7 +28,7 @@ class DatabaseSimulator():
 
         for i in range(1, self.n + 1):
             # generate order attributes
-            ord_priority = self.priorities[np.random.randint(0, len(self.priorities))]
+            ord_priority = self.PRIORITIES[np.random.randint(0, len(self.PRIORITIES))]
             ord_date = self.dates[np.random.randint(0, len(self.dates))]
             ord_quantity = np.random.randint(1, 101)
 
