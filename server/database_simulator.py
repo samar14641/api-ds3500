@@ -37,7 +37,7 @@ class DatabaseSimulator():
                 'id': i,
                 'priority': ord_priority,
                 'date': ord_date,
-                'quanity': ord_quantity
+                'quantity': ord_quantity
             })
 
         return generated_orders
