@@ -1,12 +1,24 @@
 import json
+import os
 import requests
 
+from dotenv import load_dotenv
 from order import Order
 from priority_queue import PriorityQueue
 # from pprint import pprint
+from typing import Final
 
 
-def compare_orders(ord_1: Order, ord_2: Order):  # return 1 if ord_1 has higher priority, else return 2
+load_dotenv()
+
+def compare_orders(ord_1: Order, ord_2: Order) -> int:
+    """Compare two Order objects and return the one with higher priority
+    Parameters:
+        ord_1 (Order): order object 1
+        ord_2 (Order): order object 2
+    Returns:
+        int: 1 if ord_1 has higher priority, else 2"""
+
     ord_1_props, ord_2_props = ord_1.get_props(), ord_2.get_props()
 
     # check priority: H > M > L
@@ -31,6 +43,15 @@ def compare_orders(ord_1: Order, ord_2: Order):  # return 1 if ord_1 has higher 
                     return 2
 
 def get_data(url, headers = {}, params = {}, payload = {}) -> tuple:
+    """Call an API and GET data
+    Parameters:
+        url (str): the API URL
+        headers (dict): the headers for the API (default: {})
+        params (dict): the parameters for the API (default: {})
+        payload (dict): the payload for the API (default: {})
+    Returns:
+        tuple: a tuple with True/False at index 0 (success/failure) and
+        the data or None at index 1"""
 
     try:
         res = requests.get(url, headers = headers, data = payload, params = params)
@@ -56,6 +77,13 @@ def get_data(url, headers = {}, params = {}, payload = {}) -> tuple:
         return False, None
 
 def add_to_queue(data, pq: PriorityQueue) -> PriorityQueue:
+    """Add orders to the priority queue
+    Parameters:
+        data (dict): a dictionary of orders to add
+        pq (PriorityQueue): the priority queue instance
+    Returns:
+        PriorityQueue: the priority queue instance"""
+
     for ord in data:
         order_obj = Order(ord['id'], ord['priority'], ord['date'], ord['quantity'])
 
@@ -64,10 +92,16 @@ def add_to_queue(data, pq: PriorityQueue) -> PriorityQueue:
 
     return pq
 
-def main():
+def main(api_key) -> None:
+    """Main function
+    Parameters:
+        api_key (str): the API key to use
+    Returns:
+        None"""
+
     # reply = get_data('http://127.0.0.1:5000/ds3500/api/v1/orders')
     # reply = get_data('http://127.0.0.1:5000/ds3500/api/v1/order', params = {'id': 22})
-    reply = get_data('http://127.0.0.1:5000/ds3500/api/v2/orders', headers = {'x-api-key': '11133'})
+    reply = get_data('http://127.0.0.1:5000/ds3500/api/v2/orders', headers = {'x-api-key': api_key})
 
     if reply[0]:
         pq = PriorityQueue()
@@ -78,4 +112,6 @@ def main():
         print(pq.size())        
 
 if __name__ == '__main__':
-    main()
+    DS3500_KEY: Final = os.getenv('DS3500_KEY')
+
+    main(DS3500_KEY)
