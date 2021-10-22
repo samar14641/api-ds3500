@@ -1,3 +1,5 @@
+"""Database simulator for the DS3500 Orders API"""
+
 import numpy as np
 
 from typing import Final

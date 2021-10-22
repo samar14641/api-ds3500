@@ -1,4 +1,4 @@
-"""Full demo API for DS3500"""
+"""The DS3500 Orders API"""
 
 from api_errors import PriorityValueError
 from database_simulator import DatabaseSimulator
