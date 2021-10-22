@@ -80,6 +80,14 @@ def not_found(args):
 
     return res
 
+@app.route('/', methods = ['GET'])
+def home() -> str:
+    """The API's homepage
+    Returns:
+        str: HTML of the homepage as a string"""
+
+    return '<p>DS3500 Orders API</p>'
+
 @app.route('/ds3500/api/v1/orders', methods = ['GET'])
 def get_orders():
     """Get all orders upto page limit
@@ -201,7 +209,43 @@ def get_orders_auth():
         })
 
     elif api_key is not None and not verify_key(api_key):  # key is present and invalid i.e. HTTP 401
-        return abort(401, description = 'Invalid API key')
+        return abort(401, description = 'Unauthorised')
+    else:  # key not present
+        return abort(401, description = 'Missing API key')
+
+@app.route('/ds3500/api/v2/add', methods = ['POST'])
+def add_order():
+    """Add an order after auth
+    Returns:
+        flask.Response: API response"""
+
+    api_key = request.headers.get('x-api-key', None)
+    
+    if api_key is not None and verify_key(api_key):  # key is present and valid
+        payload = dict(request.form)
+
+        if len(payload) != 4:
+            return abort(400, description = 'Invalid payload')
+
+        try:
+            # technically, we should also check the payload keys and values
+            data.append({'id': int(payload['id']), 'priority': payload['priority'], 'date': payload['date'], 'quantity': int(payload['quantity'])})
+
+            res = jsonify({
+                'error': False,
+                'added': True,
+                'id': int(payload['id']),
+                'message': 'Added'
+            })
+            res.status_code = 201
+
+            return res
+
+        except ValueError:
+            return abort(400, description = 'Invalid payload')
+
+    elif api_key is not None and not verify_key(api_key):  # key is present and invalid i.e. HTTP 401
+        return abort(401, description = 'Unauthorised')
     else:  # key not present
         return abort(401, description = 'Missing API key')
 
