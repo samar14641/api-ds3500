@@ -1,4 +1,4 @@
-"""Generic priortiy queue class"""
+"""Generic priority queue class"""
 
 class PriorityQueue():
     def __init__(self) -> None:

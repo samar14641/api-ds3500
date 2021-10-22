@@ -18,13 +18,14 @@ Running the applications:
 
 1. Install modules listed above
 
-2. Run the apps: 
-
+2. Run the server (on port 5000): 
 ```
+cd server
 python full_api.py
 ```
-for the API (runs on port 5000), and
+
+3. Run the client:
 ```
+cd client
 python order_manager.py
 ```
-for the client.

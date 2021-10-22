@@ -109,7 +109,8 @@ def main(api_key) -> None:
     # reply = get_data('http://127.0.0.1:5000/ds3500/api/v1/orders/priority', params = {'priority': 'M'})  # 200
     # reply = get_data('http://127.0.0.1:5000/ds3500/api/v1/orders/priority', params = {'priority': 'X'})  # 400
     # reply = get_data('http://127.0.0.1:5000/ds3500/api/v1/orders/quantity', params = {'quantity': 42})  # 404
-    # reply = get_data('http://127.0.0.1:5000/ds3500/api/v2/orders', headers = {'x-api-key': api_key})
+    # reply = get_data('http://127.0.0.1:5000/ds3500/api/v2/orders', headers = {'x-api-key': api_key})  # 200
+    # reply = get_data('http://127.0.0.1:5000/ds3500/api/v2/orders')  # 401
 
     pq = PriorityQueue()
 
