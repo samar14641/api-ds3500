@@ -115,7 +115,7 @@ def get_order():
             if ord['id'] == ord_id:
                 return jsonify({
                     'size': 1,
-                    'data': ord,
+                    'data': [ord],
                     'error': False
                 })
 

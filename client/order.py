@@ -1,5 +1,8 @@
+"""Order class"""
+
 from datetime import datetime
 from typing import Final
+
 
 class Error(Exception):
     pass

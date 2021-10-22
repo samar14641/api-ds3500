@@ -1,3 +1,5 @@
+"""Generic priortiy queue class"""
+
 class PriorityQueue():
     def __init__(self) -> None:
         """Constructor to initialise a blank list that serves as the base of the priority queue

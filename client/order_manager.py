@@ -1,3 +1,5 @@
+"""Order manager that runs the priority queue"""
+
 import json
 import os
 import requests
@@ -99,17 +101,23 @@ def main(api_key) -> None:
     Returns:
         None"""
 
-    # reply = get_data('http://127.0.0.1:5000/ds3500/api/v1/orders')
-    # reply = get_data('http://127.0.0.1:5000/ds3500/api/v1/order', params = {'id': 22})
-    reply = get_data('http://127.0.0.1:5000/ds3500/api/v2/orders', headers = {'x-api-key': api_key})
+    reply = get_data('http://127.0.0.1:5000/ds3500/api/v1/orders')  # 200
+    # reply = get_data('http://127.0.0.1:5000/ds3500/api/v1/order', params = {'id': 2})  # 200
+    # reply = get_data('http://127.0.0.1:5000/ds3500/api/v1/order', params = {'id': 22})  # 204
+    # reply = get_data('http://127.0.0.1:5000/ds3500/api/v1/order', params = {'id': 'abc'})  # 400
+    # reply = get_data('http://127.0.0.1:5000/ds3500/api/v1/order')  # 400
+    # reply = get_data('http://127.0.0.1:5000/ds3500/api/v1/orders/priority', params = {'priority': 'M'})  # 200
+    # reply = get_data('http://127.0.0.1:5000/ds3500/api/v1/orders/priority', params = {'priority': 'X'})  # 400
+    # reply = get_data('http://127.0.0.1:5000/ds3500/api/v1/orders/quantity', params = {'quantity': 42})  # 404
+    # reply = get_data('http://127.0.0.1:5000/ds3500/api/v2/orders', headers = {'x-api-key': api_key})
+
+    pq = PriorityQueue()
 
     if reply[0]:
-        pq = PriorityQueue()
-
         pq = add_to_queue(reply[1]['data'], pq) 
 
-        print(pq.__str__())  # string representation of the queue after all original orders are processed
-        print(pq.size())        
+    print('\nPriority queue:', pq.__str__())  # string representation of the queue after all original orders are processed
+    print('Length:', pq.size())        
 
 if __name__ == '__main__':
     DS3500_KEY: Final = os.getenv('DS3500_KEY')
